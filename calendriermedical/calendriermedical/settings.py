@@ -76,12 +76,11 @@ WSGI_APPLICATION = 'calendriermedical.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'database': 'calendrier_medical',
-            'user': 'dr_raoult',
-            'password': 'coronavirus',
-            'default-character-set': 'utf8'
-        }
+        'NAME': 'calendrier_medical',
+        'HOST': 'localhost',
+        'USER': 'dr_raoult',
+        'PASSWORD': 'coronavirus',
+        'default-character-set': 'utf8',
     }
 }
 
