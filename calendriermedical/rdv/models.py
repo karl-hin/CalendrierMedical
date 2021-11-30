@@ -34,3 +34,17 @@ def save_user_profile(sender, instance, **kwargs):
         instance.patient_profile.save()
     else:
         instance.doctor_profile.save()
+
+
+class TypeChoice(Enum):
+    SIMPLE = "simple"
+    SPECIALIST = "specialiste"
+    MANIPULATION = "manipulation"
+
+
+class Rdv(models.Model):
+    date = models.DateField()
+    hours = models.TimeField()
+    type = models.CharField(choices=[(tag, tag.value) for tag in TypeChoice])
+    doctor = models.ForeignKey(DoctorProfile)
+    patient = models.ForeignKey(PatientProfile)
