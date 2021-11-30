@@ -11,15 +11,16 @@ class Group(Enum):
     DOCTOR = "doctor"
 
 
-class Profile(models.Models):
+class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    group = models.CharField(choices=[(tag, tag.value) for tag in Group])
+    group = models.CharField(max_length=7,
+                             choices=[(tag, tag.value) for tag in Group])
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
             Profile.objects.create(user=instance)
 
-    @receiver()(post_save, sender=User)
+    @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
