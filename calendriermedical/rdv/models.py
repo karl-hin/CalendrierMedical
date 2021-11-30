@@ -19,6 +19,9 @@ class Doctor:
 class Rdv(models.Model):
     date = models.DateField()
     hours = models.TimeField()
-    type = models.CharField(choices=[(tag, tag.value) for tag in TypeChoice])
-    doctor = models.ForeignKey(Doctor)
-    patient = models.ForeignKey(Patient)
+    type = models.CharField(max_length=10, choices=[(tag, tag.value) for tag in TypeChoice])
+    # doctor = models.ForeignKey(Doctor)
+    # patient = models.ForeignKey(Patient)
+
+    def __str__(self):
+        return self.date + self.hours + self.type
