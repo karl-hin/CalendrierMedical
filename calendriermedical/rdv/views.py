@@ -13,4 +13,4 @@ class IndexView(generic.ListView):
     context_object_name = 'slots_list'
 
     def get_queryset(self):
-        return get_available_slots(datetime.date.today())
+        return get_available_slots(datetime.date.today() + datetime.timedelta(days=1))

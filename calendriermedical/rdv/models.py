@@ -64,10 +64,10 @@ def get_available_slots(date):
     available_slots = get_daily_slots(date)
     for rdv in rdvs:
         slot_index = available_slots.index(rdv.hours.strftime("%H:%M"))
-        if rdv.type == 'manipulation':
+        if rdv.type == '2':
             del available_slots[slot_index + 3]
             del available_slots[slot_index + 2]
-        if rdv.type == 'specialiste':
+        if rdv.type == '1':
             del available_slots[slot_index + 2]
         del available_slots[slot_index + 1]
         del available_slots[slot_index]
