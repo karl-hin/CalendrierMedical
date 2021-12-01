@@ -35,6 +35,7 @@ def save_user_profile(sender, instance, **kwargs):
     elif not instance.is_staff:
         instance.doctor_profile.save()
 
+
 class TypeChoice(Enum):
     SIMPLE = "simple"
     SPECIALIST = "specialiste"
