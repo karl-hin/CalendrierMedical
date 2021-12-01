@@ -8,7 +8,8 @@
 {% if rdv_list %}
 
 {% for rdv in rdv_list %}
-<a href="{% url 'rdv:details_rdv_view' rdv.id %}">détail rdv<a>
+
+<a href="{% url 'rdv:details_rdv_view' rdv.id %}">détail rdv</a>
 <ul>
     <li>{{rdv.patient.user.first_name}} {{rdv.patient.user.last_name}}</li>
     <li>{{rdv.date}}</li>
@@ -21,7 +22,6 @@
 {% else %}
 <p>No rdv are available.</p>
 {% endif %}
-
 
 </body>
 </html>
