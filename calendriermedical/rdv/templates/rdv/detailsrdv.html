@@ -2,13 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Calendar</title>
+    <title>details rdv</title>
 </head>
 <body>
-{% if rdv_list %}
-
-{% for rdv in rdv_list %}
-<a href="{% url 'rdv:details_rdv_view' rdv.id %}">détail rdv<a>
 <ul>
     <li>{{rdv.patient.user.first_name}} {{rdv.patient.user.last_name}}</li>
     <li>{{rdv.date}}</li>
@@ -16,12 +12,5 @@
     <li>{{rdv.type}}</li>
     <li>a rdv avec: {{rdv.doctor.user.first_name}} {{rdv.doctor.user.last_name}}</li>
 </ul>
-{% endfor %}
-
-{% else %}
-<p>No rdv are available.</p>
-{% endif %}
-
-
 </body>
 </html>
