@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendar</title>
+</head>
+<body>
+{% if rdv_list %}
+
+{% for rdv in rdv_list %}
+<h3>{{rdv.id}}</h3>
+<ul>
+    <li>{{rdv.date}}</li>
+    <li>{{rdv.hours}}</li>
+    <li>{{rdv.type}}</li>
+</ul>
+{% endfor %}
+
+{% else %}
+<p>No rdv are available.</p>
+{% endif %}
+
+<h3>Ajouter un rendez-vous</h3>
+<form action="{% url 'rdv:add' date hours type patient doctor %}" method="post">
+    {% csrf_token %}
+
+
+    <label for="date">Date rendez-vous</label>
+    <input type="date" id="date" name="date" required>
+
+    <label for="hours">Heure début rendez-vous</label>
+    <input type="time" id="hours" name="hours" min="08:00" max="18:00" required>
+    <small>Les rendez-vous sont possibles du lundi au jeudi de 8h à 12h et de 14h à 18, de 14h à 18h le vendredi</small>
+
+    <label for="type">Choisir un type de rendez-vous</label>
+    <select name="type" id="type">
+        <option value="">--Votre choix--</option>
+        <option value="0">Simple</option>
+        <option value="1">Spécialiste</option>
+        <option value="2">Manipulation</option>
+    </select>
+
+    {% for patient in patient_list %}
+    <input type="radio" name="patient" id="patient{{ forloop.counter }}" value="{{ patient.id }}">
+    <label for="patient{{ forloop.counter }}">{{ patient.first_name}} {{ patient.last_name}}</label><br>
+    {% endfor %}
+
+    {% for doctor in doctor_list %}
+    <input type="radio" name="doctor" id="doctor{{ forloop.counter }}" value="{{ doctor.id }}">
+    <label for="doctor{{ forloop.counter }}">{{ doctor.first_name}} {{ doctor.last_name}}</label><br>
+    {% endfor %}
+
+    <input type="submit" value="add">
+</form>
+</body>
+</html>
