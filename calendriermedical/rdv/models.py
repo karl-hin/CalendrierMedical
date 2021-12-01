@@ -39,31 +39,22 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class TypeChoice(Enum):
-    SIMPLE = "simple"
-    SPECIALIST = "specialiste"
-    MANIPULATION = "manipulation"
+    SIMPLE = ('SIMPLE', 'simple'),
+    SPECIALIST = ('SPECIALIST', 'specialiste'),
+    MANIPULATION = ('MANIPULATION', 'manipulation'),
 
 
 class Rdv(models.Model):
     date = models.DateField()
     hours = models.TimeField()
-    type = models.CharField(max_length=10, choices=[(tag, tag.value) for tag in TypeChoice])
-    # doctor = models.ForeignKey(Doctor)
-    # patient = models.ForeignKey(Patient)
+    type = models.CharField(max_length=30, choices=[(tag, tag.value) for tag in TypeChoice])
+    doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE)
+    patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
 
-    def end(self):
-        if self.type == "simple":
-            delta = time(0, 30)
-        elif self.type == "specialiste":
-            delta = time(0, 45)
-        else:
-            delta = time(0, 55)
-        return self.hours + delta
+    # def __str__(self):
+    #     return self.date + self.hours + self.type
 
-    def __str__(self):
-        return self.date + self.hours + self.type
-
-
+    
 # utils functions
 def get_available_slots(date):
     rdvs = get_rdv_date(date)
