@@ -24,18 +24,22 @@ class DoctorProfile(models.Model):
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-    if instance.is_patient:
-        PatientProfile.objects.get_or_create(user=instance)
-    elif not instance.is_staff:
-        DoctorProfile.objects.get_or_create(user=instance)
+    if not instance.is_staff:
+        if instance.is_patient:
+            PatientProfile.objects.get_or_create(user=instance)
+        else:
+            DoctorProfile.objects.get_or_create(user=instance)
+    pass
 
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-    if instance.is_patient:
-        instance.patient_profile.save()
-    elif not instance.is_staff:
-        instance.doctor_profile.save()
+    if not instance.is_staff:
+        if instance.is_patient:
+            instance.patient_profile.save()
+        else:
+            instance.doctor_profile.save()
+    pass
 
 
 class TypeChoice(Enum):
