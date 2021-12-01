@@ -24,7 +24,7 @@ class DoctorProfile(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if instance.is_patient:
         PatientProfile.objects.get_or_create(user=instance)
-    else:
+    elif not instance.is_staff:
         DoctorProfile.objects.get_or_create(user=instance)
 
 
@@ -32,5 +32,5 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     if instance.is_patient:
         instance.patient_profile.save()
-    else:
+    elif not instance.is_staff:
         instance.doctor_profile.save()
