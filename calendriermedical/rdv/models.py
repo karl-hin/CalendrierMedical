@@ -34,3 +34,20 @@ def save_user_profile(sender, instance, **kwargs):
         instance.patient_profile.save()
     elif not instance.is_staff:
         instance.doctor_profile.save()
+
+
+class TypeChoice(Enum):
+    SIMPLE = ('SIMPLE', 'simple'),
+    SPECIALIST = ('SPECIALIST', 'specialiste'),
+    MANIPULATION = ('MANIPULATION', 'manipulation'),
+
+
+class Rdv(models.Model):
+    date = models.DateField()
+    hours = models.TimeField()
+    type = models.CharField(max_length=30, choices=[(tag, tag.value) for tag in TypeChoice])
+    doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE)
+    patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
+
+    # def __str__(self):
+    #     return self.date + self.hours + self.type
