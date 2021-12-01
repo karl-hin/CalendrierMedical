@@ -26,38 +26,41 @@ class DoctorProfile(models.Model):
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-    if instance.is_patient:
-        PatientProfile.objects.get_or_create(user=instance)
-    elif not instance.is_staff:
-        DoctorProfile.objects.get_or_create(user=instance)
+    if not instance.is_staff:
+        if instance.is_patient:
+            PatientProfile.objects.get_or_create(user=instance)
+        else:
+            DoctorProfile.objects.get_or_create(user=instance)
+    pass
 
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-    if instance.is_patient:
-        instance.patient_profile.save()
-    elif not instance.is_staff:
-        instance.doctor_profile.save()
+    if not instance.is_staff:
+        if instance.is_patient:
+            instance.patient_profile.save()
+        else:
+            instance.doctor_profile.save()
+    pass
 
 
 class TypeChoice(Enum):
-    SIMPLE = "simple"
-    SPECIALIST = "specialiste"
-    MANIPULATION = "manipulation"
+    SIMPLE = ('SIMPLE', 'simple'),
+    SPECIALIST = ('SPECIALIST', 'specialiste'),
+    MANIPULATION = ('MANIPULATION', 'manipulation'),
 
 
 class Rdv(models.Model):
     date = models.DateField()
     hours = models.TimeField()
-    type = models.CharField(max_length=15, choices=[(tag.value, tag.value) for tag in TypeChoice])
-    # doctor = models.ForeignKey(Doctor)
-    # patient = models.ForeignKey(Patient)
+    type = models.CharField(max_length=30, choices=[(tag, tag.value) for tag in TypeChoice])
+    doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE)
+    patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.date.strftime("%d-%m-%Y") +  " at " + self.hours.strftime("%H:%M") +\
-               " - type : " + self.type
+    # def __str__(self):
+    #     return self.date + self.hours + self.type
 
-
+    
 # utils functions
 def get_available_slots(date):
     rdvs = get_rdv_date(date)
@@ -87,6 +90,6 @@ def get_daily_slots(date):
     else:
         slots = ['14:00', '14:15', '14:30', '14:45', '15:00', '15:15', '15:30', '15:45',
                  '16:00', '16:15', '16:30']
-    for slot in slots:
-        slot = time.strptime(slot, '%H:%M')
+    # for slot in slots:
+    #     slot = time.strptime(slot, '%H:%M')
     return slots
