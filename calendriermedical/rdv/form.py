@@ -1,9 +1,9 @@
 from django import forms
 
-from rdv.models import TypeChoice, DoctorProfile, PatientProfile, TypeChoice2
+from rdv.models import DoctorProfile, PatientProfile, TypeChoice2
 
 
-class AddRDVForm(forms.Form):
+class GetRDVForm(forms.Form):
     date = forms.DateField(
         input_formats=['%Y-%m-%d'],
         widget=forms.DateInput(attrs={'type': 'date', 'format': '%Y-%m-%d'})
@@ -22,3 +22,5 @@ class AddRDVForm(forms.Form):
         widget=forms.Select,
         queryset=PatientProfile.objects.all()
     )
+
+

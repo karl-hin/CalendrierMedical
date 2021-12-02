@@ -7,10 +7,18 @@
 <body>
 <h3>Ajouter un rendez-vous</h3>
 
-<form action="{% url 'rdv:add_rdv_view' %}" method="post">
+<div>
+    <p>{{ doctor }}</p>
+    <p>{{ patient }}</p>
+    <p>{{ type }}</p>
+    <p>{{ date }}</p>
+</div>
+
+<form action="{% url 'rdv:add_rdv_view' date=date patient=patient.id type=type doctor=doctor.id %}" method="post">
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit">
+    <label for="hours">Choisir le créneau</label>
+    <input type="time" id="hours" name="hours">
+    <input type="submit" value="Ajouter">
 </form>
 
 </body>
