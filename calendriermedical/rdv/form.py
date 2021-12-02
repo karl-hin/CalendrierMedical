@@ -1,6 +1,6 @@
 from django import forms
 
-from rdv.models import TypeChoice, DoctorProfile, PatientProfile, TypeChoice2
+from .models import TypeChoice, DoctorProfile, PatientProfile, TypeChoice2
 
 
 class AddRDVForm(forms.Form):
