@@ -6,3 +6,4 @@ admin.site.register(User)
 admin.site.register(PatientProfile)
 admin.site.register(DoctorProfile)
 admin.site.register(Rdv)
+
