@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Choisir un créneau horaire</title>
+</head>
+<body>
+<h3>Choisir un créneau horaire</h3>
+
+<form action="{% url 'rdv:choose_rdv_view' %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        {% for slot in slots %}
+            <input type="radio" name="slot" value="{{ slot }}">
+            <label for="{{ slot }}">{{ slot }}</label><br>
+        {% endfor %}
+    </fieldset>
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>

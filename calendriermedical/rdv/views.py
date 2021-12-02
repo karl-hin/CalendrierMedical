@@ -28,7 +28,7 @@ def add(request):
     created_rdv = Rdv.objects.latest('id')
 
     if request.method == 'POST':
-        return HttpResponseRedirect(reverse('rdv:details_rdv_view', args=(created_rdv.id,)))
+        return HttpResponseRedirect('rdv:details_rdv_view', args=(created_rdv.id,))
     else:
         rdv_list = Rdv.objects.order_by('-date')
         return render(request, 'rdv/calendar.html', {'rdv_list': rdv_list})
@@ -52,8 +52,7 @@ def add_rdv_view(request):
             # patient = PatientProfile.objects.get(pk=request.POST['patient'])
             # doctor = DoctorProfile.objects.get(pk=request.POST['doctor'])
 
-            return HttpResponseRedirect(reverse('rdv:choose_rdv_view',
-                                                args=(rdv_form,)))
+            return choose_rdv_view(request, rdv_form)
     else:
         rdv_form = AddRDVForm
 
@@ -61,12 +60,16 @@ def add_rdv_view(request):
 
 
 def choose_rdv_view(request, rdv_form):
-    slots = get_available_slots(rdv_form['date'].value())
+    doctor = DoctorProfile.objects.get(pk=rdv_form['doctor'].value())
+    p_date = rdv_form['date'].value()
+    date = datetime.date(int(p_date.split('-')[0]), int(p_date.split('-')[1]), int(p_date.split('-')[2]))
+    slots = get_available_slots(date, doctor.id)
+
+    return render(request, 'rdv/chooserdv.html', {'rdv_form': rdv_form, 'slots': slots})
 
 
 class IndexView(generic.ListView):
     template_name = 'rdv/index.html'
-    # slots_list = get_available_slots(datetime.date.today())
     context_object_name = 'slots_list'
 
     def get_queryset(self):

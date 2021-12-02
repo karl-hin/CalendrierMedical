@@ -1,3 +1,4 @@
+import datetime
 import time
 
 from django.db import models
@@ -74,10 +75,10 @@ def get_available_slots(date, doctor_id):
     available_slots = get_daily_slots(date)
     for rdv in rdvs:
         slot_index = available_slots.index(rdv.hours.strftime("%H:%M"))
-        if rdv.type == '2':
+        if rdv.type == 'MANIPULATION':
             del available_slots[slot_index + 3]
             del available_slots[slot_index + 2]
-        if rdv.type == '1':
+        if rdv.type == 'SPECIALIST':
             del available_slots[slot_index + 2]
         del available_slots[slot_index + 1]
         del available_slots[slot_index]
@@ -88,8 +89,9 @@ def get_rdv_date(date, doctor_id):
     return Rdv.objects.filter(date=date, doctor=doctor_id)
 
 
-def get_daily_slots(date):
-    if date.weekday() <= 3:
+def get_daily_slots(p_date):
+    # date = datetime.date(int(p_date.split('-')[0]), int(p_date.split('-')[1]), int(p_date.split('-')[2]))
+    if p_date.weekday() <= 3:
         slots = ['08:00', '08:15', '08:30', '08:45', '09:00', '09:15', '09:30', '09:45',
                  '10:00', '10:15', '10:30', '10:45', '11:00', '11:15', '11:30',
                  '14:00', '14:15', '14:30', '14:45', '15:00', '15:15', '15:30', '15:45',
