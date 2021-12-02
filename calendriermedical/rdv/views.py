@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from .form import AddRDVForm
 from .models import Rdv, DoctorProfile, PatientProfile
 
 from django.views import generic
@@ -38,11 +39,27 @@ def details_rdv_view(request, rdv_id):
     return render(request, 'rdv/detailsrdv.html', {'rdv': rdv})
 
 
+# def add_rdv_view(request):
+#     doctor_list = DoctorProfile.objects.all()
+#     patient_list = PatientProfile.objects.all()
+#     return render(request, 'rdv/addrdv.html', {'doctor_list': doctor_list,
+#                                                'patient_list': patient_list})
+
 def add_rdv_view(request):
-    doctor_list = DoctorProfile.objects.all()
-    patient_list = PatientProfile.objects.all()
-    return render(request, 'rdv/addrdv.html', {'doctor_list': doctor_list,
-                                               'patient_list': patient_list})
+    if request.method == 'POST':
+        rdv_form = AddRDVForm(request.POST)
+        if rdv_form.is_valid():
+            patient = PatientProfile.objects.get(pk=request.POST['patient'])
+            doctor = DoctorProfile.objects.get(pk=request.POST['doctor'])
+            new_rdv = Rdv(date=rdv_form['date'].value(), hours='08:00', type=rdv_form['type'].value(), patient=patient,
+                          doctor=doctor)
+            new_rdv.save()
+            created_rdv = Rdv.objects.latest('id')
+            return HttpResponseRedirect(reverse('rdv:details_rdv_view', args=(created_rdv.id,)))
+    else:
+        rdv_form = AddRDVForm
+
+    return render(request, 'rdv/addrdv.html', {'form': rdv_form})
 
 
 class IndexView(generic.ListView):

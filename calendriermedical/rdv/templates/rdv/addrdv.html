@@ -7,42 +7,10 @@
 <body>
 <h3>Ajouter un rendez-vous</h3>
 
-<form action="{% url 'rdv:add'  %}" method="post">
+<form action="{% url 'rdv:add_rdv_view' %}" method="post">
     {% csrf_token %}
-    <fieldset>
-        <label for="date">Date rendez-vous</label>
-        <input type="date" id="date" name="date" required>
-
-        <label for="hours">Heure début rendez-vous</label>
-        <input type="time" id="hours" name="hours" min="08:00" max="18:00" required>
-        <small>Les rendez-vous sont possibles du lundi au jeudi de 8h à 12h et de 14h à 18, de 14h à 18h le
-            vendredi</small>
-
-        <label for="type">Choisir un type de rendez-vous</label>
-        <select name="type" id="type">
-            <option value="">--Votre choix--</option>
-            <option value="0">Simple</option>
-            <option value="1">Spécialiste</option>
-            <option value="2">Manipulation</option>
-        </select>
-
-        <label for="type">Choisir votre profil</label>
-        {% for patient in patient_list %}
-        <input type="radio" name="patient_id" id="patient{{ forloop.counter }}" value="{{ patient.id }}">
-        <label for="patient{{ forloop.counter }}">{{patient.user.first_name}} {{patient.user.last_name}} </label><br>
-        {% endfor %}
-
-        <label for="type">Choisir votre médecin</label>
-        {% for doctor in doctor_list %}
-        <input type="radio" name="doctor_id" id="doctor{{ forloop.counter }}" value="{{ doctor.id }}">
-        <label for="doctor{{ forloop.counter }}">{{ doctor.user.first_name}} {{ doctor.user.last_name}}</label><br>
-        {% endfor %}
-
-
-    </fieldset>
-
-    <input type="submit" value="add">
-
+    {{ form }}
+    <input type="submit" value="Submit">
 </form>
 
 </body>

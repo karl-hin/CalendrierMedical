@@ -50,17 +50,24 @@ class TypeChoice(Enum):
     MANIPULATION = ('MANIPULATION', 'manipulation'),
 
 
+TypeChoice2 = [
+    ('SIMPLE', 'simple'),
+    ('SPECIALIST', 'specialiste'),
+    ('MANIPULATION', 'manipulation')
+]
+
+
 class Rdv(models.Model):
     date = models.DateField()
     hours = models.TimeField()
-    type = models.CharField(max_length=30, choices=[(tag, tag.value) for tag in TypeChoice])
+    type = models.CharField(max_length=30, choices=[(tag, tag2) for tag, tag2 in TypeChoice2])
     doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE)
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
 
     # def __str__(self):
     #     return self.date + self.hours + self.type
 
-    
+
 # utils functions
 def get_available_slots(date):
     rdvs = get_rdv_date(date)
