@@ -69,8 +69,8 @@ class Rdv(models.Model):
 
 
 # utils functions
-def get_available_slots(date):
-    rdvs = get_rdv_date(date)
+def get_available_slots(date, doctor_id):
+    rdvs = get_rdv_date(date, doctor_id)
     available_slots = get_daily_slots(date)
     for rdv in rdvs:
         slot_index = available_slots.index(rdv.hours.strftime("%H:%M"))
@@ -84,8 +84,8 @@ def get_available_slots(date):
     return available_slots
 
 
-def get_rdv_date(date):
-    return get_list_or_404(Rdv, date=date)
+def get_rdv_date(date, doctor_id):
+    return Rdv.objects.filter(date=date, doctor=doctor_id)
 
 
 def get_daily_slots(date):
