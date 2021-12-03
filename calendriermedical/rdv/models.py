@@ -18,10 +18,16 @@ class PatientProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True,
                                 related_name='patient_profile')
 
+    def __str__(self):
+        return f'{self.user.first_name} {self.user.last_name}'
+
 
 class DoctorProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True,
                                 related_name='doctor_profile')
+
+    def __str__(self):
+        return f'{self.user.first_name} {self.user.last_name}'
 
 
 @receiver(post_save, sender=User)
@@ -64,8 +70,8 @@ class Rdv(models.Model):
     doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE)
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
 
-    # def __str__(self):
-    #     return self.date + self.hours + self.type
+    def __str__(self):
+        return f'{self.date}  {self.hours} {self.type}'
 
 
 # utils functions
