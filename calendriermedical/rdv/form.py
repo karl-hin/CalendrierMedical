@@ -27,5 +27,5 @@ class AddRDVForm(forms.Form):
 class ChooseRdvForm(forms.Form):
     def __init__(self, my_choice, date, my_type, patient_id, doctor_id, *args, **kwargs):
         super(ChooseRdvForm, self).__init__(*args, **kwargs)
-        self.fields['slots'] = forms.ChoiceField(choices=(('toto', 'toto'), (3, 4)), widget=forms.RadioSelect())
+        self.fields['slots'] = forms.ChoiceField(choices=my_choice, widget=forms.RadioSelect())
 

@@ -71,6 +71,8 @@ def choose_rdv_view(request, date='', my_type='', patient_id='', doctor_id=''):
         s_date = datetime.date(int(date.split('-')[0]), int(date.split('-')[1]), int(date.split('-')[2]))
         slots = get_available_slots(s_date, doctor_id)
         form = ChooseRdvForm(slots, date, my_type, patient_id, doctor_id)
+        print('SLOTS')
+        print(slots)
 
         return render(request, 'rdv/chooserdv.html', {'form': form, 'date': date, 'my_type': my_type,
                                                       'patient_id': patient_id, 'doctor_id': doctor_id})
