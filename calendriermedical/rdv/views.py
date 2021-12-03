@@ -73,6 +73,7 @@ def choose_rdv_view(request, date='', my_type='', patient_id='', doctor_id=''):
         form = ChooseRdvForm(slots, date, my_type, patient_id, doctor_id)
         print('SLOTS')
         print(slots)
+        print(doctor_id)
 
         return render(request, 'rdv/chooserdv.html', {'form': form, 'date': date, 'my_type': my_type,
                                                       'patient_id': patient_id, 'doctor_id': doctor_id})

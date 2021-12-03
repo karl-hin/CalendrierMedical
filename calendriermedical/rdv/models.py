@@ -74,7 +74,9 @@ def get_available_slots(date, doctor_id):
     rdvs = get_rdv_date(date, doctor_id)
     available_slots = get_daily_slots(date)
     for rdv in rdvs:
-        slot_index = available_slots.index(rdv.hours.strftime("%H:%M"))
+        list_for_tuple = [rdv.hours.strftime("%H:%M"), rdv.hours.strftime("%H:%M")]
+        my_tuple = tuple(list_for_tuple)
+        slot_index = available_slots.index(my_tuple)
         if rdv.type == 'MANIPULATION':
             del available_slots[slot_index + 3]
             del available_slots[slot_index + 2]
@@ -82,6 +84,8 @@ def get_available_slots(date, doctor_id):
             del available_slots[slot_index + 2]
         del available_slots[slot_index + 1]
         del available_slots[slot_index]
+    # for rdv in rdvs:
+    #     filtered_slots = [(x, y) for x, y in available_slots if x != rdv.hours.strftime("%H:%M")]
     return available_slots
 
 
