@@ -54,7 +54,6 @@ def add_rdv_view(request):
             date = rdv_form['date'].value()
             my_type = rdv_form['my_type'].value()
 
-            # created_rdv = Rdv.objects.latest('id')
             return HttpResponseRedirect(reverse('rdv:choose_rdv_view',
                                                 kwargs={'date': date, 'my_type': my_type, 'patient_id': patient_id,
                                                         'doctor_id': doctor_id}))
@@ -66,14 +65,19 @@ def add_rdv_view(request):
 
 def choose_rdv_view(request, date='', my_type='', patient_id='', doctor_id=''):
     if request.method == 'POST':
-        pass
+        date_rdv = request.POST['date']
+        hours = request.POST['slots']
+        type_rdv = request.POST['my_type']
+        patient = PatientProfile.objects.get(pk=request.POST['patient_id'])
+        doctor = DoctorProfile.objects.get(pk=request.POST['doctor_id'])
+        new_rdv = Rdv(date=date_rdv, hours=hours, type=type_rdv, patient=patient, doctor=doctor)
+        new_rdv.save()
+        created_rdv = Rdv.objects.latest('id')
+        return HttpResponseRedirect(reverse('rdv:details_rdv_view', kwargs={'rdv_id': created_rdv.id}))
     else:
         s_date = datetime.date(int(date.split('-')[0]), int(date.split('-')[1]), int(date.split('-')[2]))
         slots = get_available_slots(s_date, doctor_id)
-        form = ChooseRdvForm(slots, date, my_type, patient_id, doctor_id)
-        print('SLOTS')
-        print(slots)
-        print(doctor_id)
+        form = ChooseRdvForm(slots)
 
         return render(request, 'rdv/chooserdv.html', {'form': form, 'date': date, 'my_type': my_type,
                                                       'patient_id': patient_id, 'doctor_id': doctor_id})
