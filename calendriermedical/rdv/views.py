@@ -85,11 +85,3 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         return get_available_slots(datetime.date.today(), 1)
-
-
-def test(request, date='', my_type='', patient_id='', doctor_id=''):
-    s_date = datetime.date(int(date.split('-')[0]), int(date.split('-')[1]), int(date.split('-')[2]))
-    slots = get_available_slots(s_date, doctor_id)
-    form = ChooseRdvForm(slots, date, my_type, patient_id, doctor_id)
-    return render(request, 'rdv/chooserdv.html', {'form': form})
-    # return HttpResponse(f'{text} {number}')

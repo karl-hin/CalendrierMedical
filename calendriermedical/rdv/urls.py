@@ -10,6 +10,5 @@ urlpatterns = [
          views.choose_rdv_view, name="choose_rdv_view"),
     path('add', views.add, name='add'),
     path('detailsrdv/<int:rdv_id>/', views.details_rdv_view, name='details_rdv_view'),
-    path('slots/', views.IndexView.as_view(), name='slots_index'),
-    path('test/<str:date>/<str:my_type>/<int:patient_id>/<int:doctor_id>', views.test, name='test')
+    path('slots/', views.IndexView.as_view(), name='slots_index')
 ]
