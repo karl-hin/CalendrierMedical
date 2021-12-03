@@ -8,7 +8,7 @@ class AddRDVForm(forms.Form):
         input_formats=['%Y-%m-%d'],
         widget=forms.DateInput(attrs={'type': 'date', 'format': '%Y-%m-%d'})
     )
-    type = forms.ChoiceField(
+    my_type = forms.ChoiceField(
         required=True,
         widget=forms.Select,
         choices=TypeChoice2
@@ -22,3 +22,10 @@ class AddRDVForm(forms.Form):
         widget=forms.Select,
         queryset=PatientProfile.objects.all()
     )
+
+
+class ChooseRdvForm(forms.Form):
+    def __init__(self, my_choice, date, my_type, patient_id, doctor_id, *args, **kwargs):
+        super(ChooseRdvForm, self).__init__(*args, **kwargs)
+        self.fields['slots'] = forms.ChoiceField(choices=(('toto', 'toto'), (3, 4)), widget=forms.RadioSelect())
+

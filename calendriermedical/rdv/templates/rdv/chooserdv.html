@@ -7,14 +7,9 @@
 <body>
 <h3>Choisir un créneau horaire</h3>
 
-<form action="{% url 'rdv:choose_rdv_view' %}" method="post">
+<form action="{% url 'rdv:choose_rdv_view' date=date my_type=my_type patient_id=patient_id doctor_id=doctor_id %}" method="post">
     {% csrf_token %}
-    <fieldset>
-        {% for slot in slots %}
-            <input type="radio" name="slot" value="{{ slot }}">
-            <label for="{{ slot }}">{{ slot }}</label><br>
-        {% endfor %}
-    </fieldset>
+    {{ form }}
     <input type="submit" value="Submit">
 </form>
 
